@@ -12,11 +12,11 @@ int main()
 	awesomeSpace.fillSpace();
 	awesomeSpace.makePointers(10);
 	//awesomeSpace.makeBodies();
-	for (int i = 0; i < 3; i++) {
+	for (int i = 0; i < 10; i++) {
 		awesomeSpace.display();
-		for (int j = 0; j < 3; j++) {//only display every few time iterates
+		for (int j = 0; j < 5; j++) {//only display every few time iterates
 			awesomeSpace.time();
-			std::cout << "time passes";
+			std::cout << "time passes" << std::endl;
 		}
 	}
 	return 0;
