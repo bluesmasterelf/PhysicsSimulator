@@ -29,19 +29,23 @@ void Space::display() {
 }
 
 void Space::time() {
-	for (int i = 0; i < 10; i++) {
+	for (int i = 0; i < pointers.size(); i++) {
 		
 		//update positions according as their vectors dictate
 		Body* temp = pointers[i];
 		int newPos[2] = { (temp->getPosition()[0] + temp->getVector()[0]) % 40, (temp->getPosition()[1] + temp->getVector()[1]) % 40 };
+		//correct for negative indices
+		if (newPos[0] < 0) { newPos[0] += 40; }
+		if (newPos[1] < 0) { newPos[1] += 40; }
 		temp->updatePosition(newPos);
 		pointers[i] = temp;
+		
 		//update positions in space
 		space[pointers[i]->getPosition()[0]][pointers[i]->getPosition()[1]] = static_cast<char>(i + 70);
 
 		//detect collisions
-		for (int i = 0; i < 9; i++) {
-			for (int j = i+1; j < 10;j++) {
+		for (int i = 0; i < pointers.size()-1; i++) {
+			for (int j = i+1; j < pointers.size();j++) {
 				collide(pointers[i], pointers[j]);
 				//std::cout << i << j << ", ";
 			}

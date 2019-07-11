@@ -3,8 +3,8 @@
 class Body
 {
 	//abstract Body fields
-	int mass = std::rand();
-	int vector[2] = { std::rand() % 10 - 5, std::rand() % 10 - 5 };
+	int mass = std::rand()%10+3;
+	int vector[2] = { std::rand() % 8 - 4, std::rand() % 8 - 4 };
 	int position[2] = { std::rand() % 40 , std::rand() % 40 };
 
 

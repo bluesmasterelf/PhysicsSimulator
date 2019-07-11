@@ -84,10 +84,10 @@ void Sphere::collideWith(Body* b2) {
 		
 		int newVector2Y = b2->getVector()[1] - totalDisplacement2Y;
 		
-		/*detect if vectors unchanged in casting to int
+		//detect if vectors unchanged in casting to int
 		if (newVector1X == getVector()[0] && newVector1Y == getVector()[1] && newVector2X == b2->getVector()[0] && newVector2Y == b2->getVector()[1]) {
 			newVector2Y += 1;//throw off second body in event nothing changes
-		}*/
+		}
 		
 		int newVector2[2] = {newVector2X,newVector2Y};
 
@@ -96,7 +96,7 @@ void Sphere::collideWith(Body* b2) {
 		b2->updateVector(newVector2);
 		updateVector(newVector1);
 
-		std::cout << "collision detected at " << getPosition()[0] << getPosition()[1]<< std::endl;
+		std::cout << "collision detected at " << getPosition()[0] <<", "<< getPosition()[1]<< std::endl;
 	}
 }
 bool Sphere::collide(int* pos, int rad) {
