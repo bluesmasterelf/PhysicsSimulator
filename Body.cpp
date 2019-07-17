@@ -26,7 +26,14 @@ void Body::setMass(int newMass) {
 	mass = newMass;
 }
 
-void Body::collideWith(Body* b2) {}
+void Body::setName(char newName) {
+	name = newName;
+}
+char Body::getName() {
+	return name;
+}
+
+bool Body::collideWith(Body* b2) { return false; }
 
 bool Body::collide(int* position, int rad) { return false; }
 
@@ -41,12 +48,15 @@ void Sphere::setElastic(bool newElastic) {
 	elastic = newElastic;
 }
 
-void Sphere::collideWith(Body* b2) {
+bool Sphere::collideWith(Body* b2) {
 	bool hit = b2->collide(getPosition(), getRadius());
 	if (hit) {
+		std::cout << getName() << "collided with " << b2->getName() << " at " << getPosition()[0] << ", " << getPosition()[1] << std::endl;
+
+
 		//vector mathematics (this got out of hand quickly, didn't it?)
-		float normSquared= pow((float)(pow(getPosition()[0] - b2->getPosition()[0],2))+ 
-			(float)(pow(getPosition()[1] - b2->getPosition()[1], 2)),2);//only invariant throughout computation
+		float normSquared= (float)(pow(getPosition()[0] - b2->getPosition()[0],2))+ 
+			(float)(pow(getPosition()[1] - b2->getPosition()[1], 2));//only invariant throughout computation
 		
 		//Computing new first vector
 		float massDisp1 = 2 * (float)b2->getMass() / (float)(getMass() + b2->getMass());
@@ -57,6 +67,10 @@ void Sphere::collideWith(Body* b2) {
 		float impactDirection1X = (float)(getPosition()[0] - b2->getPosition()[0]);
 		int totalDisplacement1X = (int)(massDisp1*dotProduct1*impactDirection1X/normSquared+0.5);//round float to nearest integer
 		
+		//std::cout << "first vector, second vector, first position, secon "
+		std::cout << "Norm squared " << normSquared << std::endl;
+		std::cout << "massDisp1 " << massDisp1 << " dotProduct1 " << dotProduct1 << std::endl;
+		std::cout << "impactDirection1x " << impactDirection1X << " totalDisplacement1X " << totalDisplacement1X << std::endl;
 		int newVector1X=getVector()[0]-totalDisplacement1X;
 
 		//first vector y computation
@@ -72,7 +86,7 @@ void Sphere::collideWith(Body* b2) {
 		int dotProduct2 = -1 * dotProduct1;
 
 		//second vector x computation
-		float impactDirection2X = -1.0*impactDirection1X;
+		float impactDirection2X =-1* impactDirection1X;
 		int totalDisplacement2X = (int)(massDisp1 * dotProduct2 * impactDirection2X / normSquared + 0.5);//round float to nearest integer
 
 		int newVector2X = b2->getVector()[0] - totalDisplacement2X;
@@ -86,24 +100,43 @@ void Sphere::collideWith(Body* b2) {
 		
 		//detect if vectors unchanged in casting to int
 		if (newVector1X == getVector()[0] && newVector1Y == getVector()[1] && newVector2X == b2->getVector()[0] && newVector2Y == b2->getVector()[1]) {
-			newVector2Y += 1;//throw off second body in event nothing changes
+			newVector2Y += 3;//throw off second body in event nothing changes
 		}
 		
-		int newVector2[2] = {newVector2X,newVector2Y};
+		//newVector2Y += 3;  //vectors not changing , must be a math error. 
 
+		int newVector2[2] = {newVector2X,newVector2Y};
 		
-		//update vectors
+		//update vectors //
 		b2->updateVector(newVector2);
 		updateVector(newVector1);
 
-		std::cout << "collision detected at " << getPosition()[0] <<", "<< getPosition()[1]<< std::endl;
+	
 	}
+	return false;
 }
 bool Sphere::collide(int* pos, int rad) {
 	float dist = sqrt(pow((float)(pos[0] - getPosition()[0]), 2) + pow((float)(pos[1] - getPosition()[1]), 2));
 	float sumRad = (float)(rad + getRadius());
-	if (dist< sumRad){return true;}
+	if (dist< sumRad){
+		return true;}
 	return false;
 }
 
-
+//missile function definitions
+bool Missile::collideWith(Body* b2) {
+	bool hit = b2->collide(getPosition(), getRadius());
+	if (hit) {
+		return true;
+	}
+	return false;
+}
+bool Missile::collide(int* pos, int rad) {
+	float dist = sqrt(pow((float)(pos[0] - getPosition()[0]), 2) + pow((float)(pos[1] - getPosition()[1]), 2));
+	float sumRad = (float)(rad + getRadius());
+	if (dist < sumRad) { return true; }
+	return false;
+}
+int Missile::getRadius() {
+	return radius;
+}

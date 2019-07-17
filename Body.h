@@ -3,13 +3,16 @@
 class Body
 {
 	//abstract Body fields
-	int mass = std::rand()%10+3;
+	int mass = std::rand()%20+40;
 	int vector[2] = { std::rand() % 8 - 4, std::rand() % 8 - 4 };
 	int position[2] = { std::rand() % 40 , std::rand() % 40 };
+	char name;
 
 
 
 public:
+	void setName(char newName);
+	char getName();
 	int* getPosition();
 	void updatePosition(int newPosition[]);
 	
@@ -19,7 +22,7 @@ public:
 	int getMass();
 	void setMass(int newMass);
 
-	virtual void collideWith(Body* b2);
+	virtual bool collideWith(Body* b2);
 	virtual bool collide(int* position, int rad);
 };
 
@@ -32,7 +35,14 @@ public:
 	int getRadius();
 	void setElastic(bool newElastic);
 
-	void collideWith(Body* b2);
+	bool collideWith(Body* b2);
 	bool collide(int* pos, int rad);
 };
 
+class Missile : public Body {
+	int radius = 1;
+public:
+	int getRadius();
+	bool collideWith(Body* b2);
+	bool collide(int* pos, int rad);
+};

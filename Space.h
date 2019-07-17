@@ -23,9 +23,7 @@ public:
 	void display();
 
 	void time();
-	void collide(Body* b1, Body* b2);
-
-	//void collide(Sphere b1, Sphere b2);
+	bool collide(Body* b1, Body* b2);
 
 	Space();
 	~Space();

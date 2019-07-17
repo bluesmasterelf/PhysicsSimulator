@@ -1,4 +1,3 @@
 ﻿  Body.cpp
-C:\Users\hogan\source\repos\PhysicsSimulator\PhysicsSimulator\Body.cpp(75): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-C:\Users\hogan\source\repos\PhysicsSimulator\PhysicsSimulator\Body.cpp(81): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
+C:\Users\hogan\source\repos\PhysicsSimulator\PhysicsSimulator\Body.cpp(95): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
   PhysicsSimulator.vcxproj -> C:\Users\hogan\source\repos\PhysicsSimulator\Debug\PhysicsSimulator.exe

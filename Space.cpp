@@ -11,12 +11,20 @@ void Space::fillSpace() {
 
 //Generate pointers and place them in space
 void Space::makePointers(int quantity=10) {
-	for (int i = 0; i < quantity; i++) {
-		//pointers.push_back(new Sphere); 
+	for (int k = 0; k < 2; k++) {
+		pointers.push_back(factory.MakePointer(2)); //seed a few missiles
+		pointers[k]->setName(static_cast<char>(k + 65));
+		space[pointers[k]->getPosition()[0]][pointers[k]->getPosition()[1]] = pointers[k]->getName();
+
+	}
+	for (int i = 2; i < quantity+2; i++) {
 		pointers.push_back(factory.MakePointer(1));
-		space[pointers[i]->getPosition()[0]][pointers[i]->getPosition()[1]] = static_cast<char>(i + 70);
+		pointers[i]->setName(static_cast<char>(i + 65));
+		space[pointers[i]->getPosition()[0]][pointers[i]->getPosition()[1]] = pointers[i]->getName();
 	}
 }
+
+
 
 void Space::display() {
 	for (int i = 0; i < 40; i++) {  
@@ -41,20 +49,32 @@ void Space::time() {
 		pointers[i] = temp;
 		
 		//update positions in space
-		space[pointers[i]->getPosition()[0]][pointers[i]->getPosition()[1]] = static_cast<char>(i + 70);
-
+		space[pointers[i]->getPosition()[0]][pointers[i]->getPosition()[1]] = pointers[i]->getName();
+	}
 		//detect collisions
 		for (int i = 0; i < pointers.size()-1; i++) {
 			for (int j = i+1; j < pointers.size();j++) {
-				collide(pointers[i], pointers[j]);
-				//std::cout << i << j << ", ";
+				//std::cout << i << j << "collision loop indices" << std::endl;
+				bool detonation = collide(pointers[i], pointers[j]);
+				if (detonation) {
+					std::cout << pointers[i]->getName() << " destroyed " << pointers[j]->getName() << std::endl;
+					int detPos[2] = { pointers[i]->getPosition()[0], pointers[i]->getPosition()[1] };
+					space[detPos[0]][detPos[1]] = 'X';
+					space[detPos[0] + 1][detPos[1]] = 'X';
+					space[detPos[0] - 1][detPos[1]] = 'X';
+					space[detPos[0]][detPos[1] + 1] = 'X';
+					space[detPos[0]][detPos[1] -1] = 'X';
+					pointers.erase(pointers.begin() + i);
+					pointers.erase(pointers.begin() + j-1);
+					}
 			}
 		}
-	}
+	
 }
-void Space::collide(Body* b1, Body* b2) {
-	b1->collideWith(b2);
+bool Space::collide(Body* b1, Body* b2) {
+	return b1->collideWith(b2);
 }
+
 
 Space::Space(){
 }
